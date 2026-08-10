@@ -6,7 +6,6 @@
 
 @include('layouts.navbar')
 
-<!-- Custom Bakery Theme Users Styling -->
 <style>
     body {
         background: #fdfbf7 !important; /* Warm Cream Background */
@@ -181,9 +180,28 @@
 </style>
 
 <div class="page-wrapper">
-    <div class="container">
+    <div class="container-fluid px-4">
 
-        <!-- HERO -->
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4" role="alert" style="background-color: #d1e7dd; color: #0f5132;">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <div>{{ session('success') }}</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4" role="alert" style="background-color: #f8d7da; color: #842029;">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                    <div>{{ session('error') }}</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="hero-user mb-4">
             <div class="position-relative">
                 <span class="badge bg-white text-dark px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
@@ -201,7 +219,6 @@
             </div>
         </div>
 
-        <!-- TABLE CARD -->
         <div class="custom-card">
             
             <div class="p-4">
@@ -265,7 +282,7 @@
                                     <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="m-0">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn-action btn-delete" onclick="return confirm('Yakin hapus user ini?')">
+                                        <button class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus user {{ $user->name }}?')">
                                             Hapus
                                         </button>
                                     </form>

@@ -1,283 +1,405 @@
 @extends('layouts.app')
 
-@section('title', 'Manajemen Produk - Toko Kue')
+@section('title', 'Daftar Produk - Sweet Crumbs Bakery')
 
 @section('content')
 
 @include('layouts.navbar')
 
-<!-- Custom Unique & Trendy Styling for Bakery Theme (Mocha, Cream, & Warm Rose) -->
 <style>
-    .page-wrapper {
-        background-color: #fdfbf7; /* Warm Cream background */
-        min-height: 100vh;
-        padding: 2.5rem 0;
+    :root {
+        --bakery-mocha: #4a3525;
+        --bakery-caramel: #6f4e37;
+        --bakery-cream: #fdfbf7;
+        --bakery-accent: #d4a373;
+        --bakery-soft-bg: #f8f4ee;
+        --bakery-user-bg: #f3e8dc;
+        --bakery-user-text: #6f4e37;
+        
+        /* Action Button Colors */
+        --btn-detail-bg: #f4f1ea;
+        --btn-detail-text: #6f4e37;
+        --btn-edit-bg: #f3e8dc;
+        --btn-edit-text: #4a3525;
+        --btn-delete-bg: #e8ded1;
+        --btn-delete-text: #8c4343;
     }
-    .hero-banner-unique {
-        background: linear-gradient(135deg, #4a3525 0%, #6f4e37 100%); /* Rich Mocha Gradient */
+
+    body {
+        background-color: var(--bakery-cream);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* MEMBERI JARAK ANTARA NAVBAR DENGAN DASHBOARD/CONTENT */
+    .page-wrapper {
+        padding-top: 35px;
+        padding-bottom: 40px;
+    }
+
+    /* Hero Banner Theme Penjualan */
+    .hero-banner {
+        background: #5a4130;
+        color: #ffffff;
         border-radius: 20px;
-        color: #fdfbf7;
-        box-shadow: 0 12px 30px rgba(111, 78, 55, 0.2);
+        padding: 2.5rem;
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(212, 163, 115, 0.2);
+        box-shadow: 0 10px 25px rgba(74, 53, 37, 0.15);
     }
-    .hero-banner-unique::after {
-        content: '🍰';
-        position: absolute;
-        right: -10px;
-        bottom: -20px;
-        font-size: 8rem;
-        opacity: 0.08;
-    }
-    .custom-container-card {
-        border: 1px solid #f0eae1;
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(74, 53, 37, 0.03);
+
+    .hero-badge {
         background: #ffffff;
-        overflow: hidden;
-    }
-    .search-input-group {
-        background: #fff;
-        border-radius: 12px;
-        border: 2px solid #f0eae1;
-        transition: all 0.3s ease;
-    }
-    .search-input-group:focus-within {
-        border-color: #c89666;
-        box-shadow: 0 0 0 4px rgba(200, 150, 102, 0.12);
-    }
-    .table-unique thead {
-        background: #4a3525; /* Deep Mocha */
-        color: #fdfbf7;
-    }
-    .table-unique thead th {
-        border: none;
-        font-weight: 500;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        padding: 1.1rem 1rem;
-    }
-    .product-thumbnail {
-        width: 65px;
-        height: 65px;
-        object-fit: cover;
-        border-radius: 14px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-        border: 2px solid #fdfbf7;
-    }
-    .pill-buy {
-        background-color: #f7f4ef;
-        color: #7f6e61;
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-weight: 500;
+        color: #5a4130;
         font-size: 0.8rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 12px;
     }
-    .pill-sell {
-        background-color: #faedcd; /* Soft Butter Cream */
-        color: #6b4c1b;
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.8rem;
-        border: 1px solid #e9d8a6;
+
+    .hero-title {
+        font-family: 'Georgia', serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
     }
-    .pill-stock {
-        background: linear-gradient(135deg, #d4a373 0%, #bc6c25 100%);
-        color: white;
-        padding: 5px 12px;
-        border-radius: 10px;
-        font-weight: 500;
-        font-size: 0.85rem;
+
+    .hero-subtitle {
+        color: #d1c2b5;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
     }
-    .btn-create-unique {
-        background: #fdfbf7;
-        color: #4a3525;
-        font-weight: 600;
+
+    .btn-hero-add {
+        background: #ffffff;
+        color: #5a4130 !important;
+        font-weight: 700;
         border-radius: 12px;
-        padding: 0.7rem 1.6rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        border: 1px solid #e2d9cc;
+        padding: 10px 22px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    .btn-create-unique:hover {
-        background: #c89666;
-        color: #ffffff;
-        border-color: #c89666;
+
+    .btn-hero-add:hover {
+        background: #f8f4ee;
         transform: translateY(-2px);
     }
-    .action-btn-detail {
-        background-color: #f4f1ea;
-        color: #5c4d3c;
+
+    /* Watermark Icon Roti/Croissant */
+    .hero-watermark {
+        position: absolute;
+        right: -20px;
+        bottom: -20px;
+        font-size: 11rem;
+        opacity: 0.08;
+        pointer-events: none;
+        color: #ffffff;
+    }
+
+    /* Container Grid */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 1.25rem;
+        padding: 1.5rem 0;
+    }
+
+    /* Card Item */
+    .product-card {
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #efe8de;
+        box-shadow: 0 4px 15px rgba(74, 53, 37, 0.04);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(74, 53, 37, 0.12);
+        border-color: var(--bakery-accent);
+    }
+
+    /* Gambar & Badge Stok */
+    .card-img-wrapper {
+        position: relative;
+        width: 100%;
+        height: 190px;
+        overflow: hidden;
+    }
+
+    .card-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .badge-stok {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--bakery-mocha);
+        font-weight: 700;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 20px;
+        border: 1px solid rgba(74, 53, 37, 0.1);
+        backdrop-filter: blur(2px);
+    }
+
+    /* Body Card */
+    .card-body-custom {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .badge-user {
+        background-color: var(--bakery-user-bg);
+        color: var(--bakery-user-text);
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+        margin-bottom: 8px;
+        width: fit-content;
+    }
+
+    .product-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--bakery-mocha);
+        margin-bottom: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Price Section */
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        margin-bottom: 3px;
+    }
+
+    .price-label {
+        color: #8c857b;
+    }
+
+    .price-buy {
+        color: #a39b8e;
+        text-decoration: line-through;
+    }
+
+    .price-sell {
+        color: #2e7d32;
+        font-weight: 800;
+        font-size: 1.05rem;
+    }
+
+    /* Action Group */
+    .action-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid #f6f1e9;
+    }
+
+    .btn-action-custom {
+        height: 34px;
         border: none;
         border-radius: 8px;
-        font-weight: 500;
-        padding: 0.4rem 0.8rem;
-        transition: all 0.2s;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
     }
-    .action-btn-detail:hover {
-        background-color: #5c4d3c;
-        color: white;
+
+    .btn-action-custom:hover {
+        transform: translateY(-1px);
+        filter: brightness(0.95);
     }
-    .action-btn-edit {
-        background-color: #fefae0;
-        color: #b5838d;
+
+    .btn-card-detail { 
+        background: var(--btn-detail-bg); 
+        color: var(--btn-detail-text); 
+        flex: 1; 
+    }
+
+    .btn-card-edit { 
+        background: var(--btn-edit-bg); 
+        color: var(--btn-edit-text); 
+        flex: 1; 
+    }
+    
+    .form-delete-inline {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        width: 36px;
+    }
+
+    .btn-card-delete { 
+        background: var(--btn-delete-bg); 
+        color: var(--btn-delete-text); 
+        width: 100%;
+        padding: 0;
+    }
+
+    /* Search Box Theme */
+    .search-bakery {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 6px 12px;
+        border: 2px solid #efe8de;
+        box-shadow: 0 4px 12px rgba(74, 53, 37, 0.03);
+    }
+
+    .search-bakery input {
         border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        padding: 0.4rem 0.8rem;
-        transition: all 0.2s;
+        box-shadow: none !important;
+        background: transparent;
+        color: var(--bakery-mocha);
     }
-    .action-btn-edit:hover {
-        background-color: #b5838d;
+
+    .btn-search-bakery {
+        background: var(--bakery-mocha);
         color: white;
-    }
-    .action-btn-delete {
-        background-color: #fdf0ed;
-        color: #e07a5f;
+        border-radius: 12px;
+        padding: 8px 24px;
+        font-weight: 600;
         border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        padding: 0.4rem 0.8rem;
-        transition: all 0.2s;
+        transition: background 0.2s;
     }
-    .action-btn-delete:hover {
-        background-color: #e07a5f;
-        color: white;
+
+    .btn-search-bakery:hover {
+        background: var(--bakery-caramel);
     }
 </style>
 
 <div class="page-wrapper">
-    <div class="container">
+    <div class="container-fluid px-4">
         
-        <!-- Hero Banner -->
-        <div class="hero-banner-unique p-4 p-md-5 mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div>
-                <span class="badge bg-white text-dark px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #6f4e37 !important;">
-                    🥐  Mini Bites Bakery 
-                </span>
-                <h1 class="display-6 fw-bold mb-1" style="font-family: serif;">Manajemen Katalog Kue</h1>
-                <p class="text-white-50 mb-0">Kelola kreasi kue lezat, perbarui harga, dan pantau stok harian butik Anda.</p>
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4" role="alert" style="background-color: #d1e7dd; color: #0f5132;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                <div>{{ session('success') }}</div>
             </div>
-            <div class="mt-4 mt-md-0">
-                @can('create', App\Models\Produk::class)
-                <a href="{{ route('produk.create') }}" class="btn btn-create-unique">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah Kue Baru
-                </a>
-                @endcan
-            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    @endif
 
-        <!-- Search Bar Card -->
-        <div class="custom-container-card p-3 mb-4">
-            <form action="{{ route('produk.index') }}" method="GET">
-                <div class="input-group search-input-group px-2 py-1">
-                    <span class="input-group-text bg-transparent border-0 text-muted ps-2">
-                        <i class="bi bi-search fs-5" style="color: #c89666;"></i>
-                    </span>
-                    <input 
-                        type="text"
-                        name="search"
-                        value="{{ request('search') }}"
-                        class="form-control border-0 bg-transparent shadow-none px-2"
-                        placeholder="Cari nama kue atau menu spesial..."
-                    >
-                    <button class="btn px-4 fw-semibold rounded-pill my-1 text-white" type="submit" style="background-color: #6f4e37;">
-                        Cari
-                    </button>
-                    @if(request('search'))
-                        <a href="{{ route('produk.index') }}" class="btn btn-link text-muted text-decoration-none ms-2">
-                            Reset
-                        </a>
-                    @endif
-                </div>
-            </form>
-        </div>
-
-        <!-- Table Card -->
-        <div class="custom-container-card">
-            <div class="table-responsive">
-                <table class="table table-unique table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="ps-4">No</th>
-                            <th scope="col">Pencatat</th>
-                            <th scope="col">Foto Kue</th>
-                            <th scope="col">Nama Produk</th>
-                            <th scope="col">Harga Modal</th>
-                            <th scope="col">Harga Jual</th>
-                            <th scope="col">Stok Tersedia</th>
-                            <th scope="col" class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($products as $product)
-                        <tr>
-                            <th scope="row" class="ps-4 text-muted">{{ $products->firstItem() + $loop->index }}</th>
-                            <td>
-                                <span class="fw-semibold text-dark"><i class="bi bi-person-heart text-muted me-1"></i> {{ $product->user->name }}</span>
-                            </td>
-                            <td>
-                                <img src="{{ asset('storage/'.$product->foto) }}" class="product-thumbnail" alt="{{ $product->nama }}">
-                            </td>
-                            <td>
-                                <span class="fw-bold text-dark fs-6" style="font-family: serif;">{{ $product->nama }}</span>
-                            </td>
-                            <td>
-                                <span class="pill-buy">Rp {{ number_format($product->harga_beli, 0, ',', '.') }}</span>
-                            </td>
-                            <td>
-                                <span class="pill-sell">Rp {{ number_format($product->harga_jual, 0, ',', '.') }}</span>
-                            </td>
-                            <td>
-                                <span class="pill-stock">{{ $product->stok }} PCS</span>
-                            </td>
-                            <td class="text-center">
-                                <div class="d-inline-flex gap-2 align-items-center justify-content-center">
-                                    <a href="{{ route('produk.show', $product) }}" class="action-btn-detail btn-sm">Detail</a>
-                                    
-                                    @can('update', $product)
-                                    <a href="{{ route('produk.edit', $product) }}" class="action-btn-edit btn-sm">Ubah</a>
-                                    @endcan
-                                    
-                                    @can('delete', $product)
-                                    <form action="{{ route('produk.destroy', $product) }}" method="POST" class="d-inline m-0">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn-delete btn-sm" onclick="return confirm('Apakah anda yakin ingin menghapus kue ini dari katalog?')">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                    @endcan
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="8" class="text-center py-5">
-                                <div class="text-muted py-4">
-                                    <i class="bi bi-cup-hot display-4 d-block mb-3" style="color: #c89666;"></i>
-                                    <h5 class="fw-bold text-secondary" style="font-family: serif;">Belum ada menu kue di etalase.</h5>
-                                    <p class="text-muted small mb-0">Silakan tambahkan produk baru atau periksa kembali kata kunci pencarian Anda.</p>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4" role="alert" style="background-color: #f8d7da; color: #842029;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                <div>{{ session('error') }}</div>
             </div>
-
-            <!-- Pagination Footer -->
-            <div class="card-footer bg-white border-0 py-4 px-4">
-                <div class="d-flex justify-content-center justify-content-md-end">
-                    {{ $products->withQueryString()->links() }}
-                </div>
-            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    @endif
 
+    <div class="hero-banner mb-4">
+        <div class="hero-badge">
+            🥐 Mini Bites Bakery
+        </div>
+        <h1 class="hero-title">Halaman Produk</h1>
+        <p class="hero-subtitle">Kelola inventaris, harga beli, harga jual, dan stok varian kue toko Anda.</p>
+        
+        <a href="{{ route('produk.create') }}" class="btn-hero-add">
+            <i class="bi bi-plus-circle-fill"></i> Tambah Produk
+        </a>
+
+        <i class="bi bi-shop hero-watermark"></i>
     </div>
+
+    <form action="{{ route('produk.index') }}" method="GET" class="mb-4">
+        <div class="search-bakery d-flex align-items-center">
+            <i class="bi bi-search text-muted me-2 ms-2"></i>
+            <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama produk kue...">
+            <button type="submit" class="btn btn-search-bakery">Cari</button>
+        </div>
+    </form>
+
+    <div class="product-grid">
+        @forelse($products as $product)
+        <div class="product-card">
+            
+            <div class="card-img-wrapper">
+                <span class="badge-stok">📦 {{ $product->stok ?? '0' }} pcs</span>
+                <img src="{{ $product->foto ? asset('storage/' . $product->foto) : 'https://via.placeholder.com/300x200?text=No+Image' }}" alt="{{ $product->nama ?? $product->nama_produk ?? 'Kue' }}">
+            </div>
+
+            <div class="card-body-custom">
+                
+                <div class="product-title" title="{{ $product->nama ?? $product->nama_produk ?? 'Nama Kue Tidak Ada' }}">
+                    {{ $product->nama ?? $product->nama_produk ?? 'Nama Produk Kue' }}
+                </div>
+
+                <div class="badge-user">
+                    👤 {{ $product->user->name ?? 'Admin' }}
+                </div>
+
+                <div class="price-row">
+                    <span class="price-label">Beli:</span>
+                    <span class="price-buy">Rp {{ number_format($product->harga_beli ?? 0, 0, ',', '.') }}</span>
+                </div>
+
+                <div class="price-row">
+                    <span class="price-label">Jual:</span>
+                    <span class="price-sell">Rp {{ number_format($product->harga_jual ?? 0, 0, ',', '.') }}</span>
+                </div>
+
+                <div class="action-group">
+                    <a href="{{ route('produk.show', $product) }}" class="btn-action-custom btn-card-detail">
+                        👁️ Detail
+                    </a>
+                    
+                    <a href="{{ route('produk.edit', $product) }}" class="btn-action-custom btn-card-edit">
+                        ✏️ Edit
+                    </a>
+
+                    <form action="{{ route('produk.destroy', $product) }}" method="POST" class="form-delete-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-action-custom btn-card-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus produk {{ $product->nama ?? $product->nama_produk }}?')" title="Hapus">
+                            🗑️
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+        @empty
+        <div class="col-12 text-center py-5 text-muted">
+            <i class="bi bi-box-seam fs-1 d-block mb-2" style="color: var(--bakery-caramel);"></i>
+            Data produk tidak ditemukan.
+        </div>
+        @endforelse
+    </div>
+
 </div>
 
 @endsection

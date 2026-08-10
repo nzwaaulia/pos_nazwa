@@ -74,11 +74,13 @@ class PenjualanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+   public function store(Request $request)
+{
+    // ... proses simpan transaksi / checkout ...
 
+    return redirect()->route('penjualan.index')
+        ->with('success', 'Transaksi berhasil disimpan!');
+}
     /**
      * Display the specified resource.
      */

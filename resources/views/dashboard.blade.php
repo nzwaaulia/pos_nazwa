@@ -106,8 +106,8 @@
         font-size: 0.8rem;
     }
 </style>
-
 <div class="dashboard-wrapper">
+
     <div class="container-fluid px-4">
 
         <!-- Hero Banner -->

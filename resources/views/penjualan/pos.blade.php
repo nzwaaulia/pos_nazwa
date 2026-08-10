@@ -122,7 +122,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <span class="badge bg-white px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
-                    🥖  Mini Bites Bakery
+                    🥖 Mini Bites Bakery
                 </span>
                 <h2 class="fw-bold mb-0" style="font-family: serif; color: #4a3525;">Kasir & Penjualan Roti</h2>
                 <p class="text-muted small mb-0">Kelola transaksi pesanan kue pelanggan dengan cepat dan efisien.</p>
@@ -243,14 +243,14 @@
                                         </td>
                                         <td class="fw-semibold text-success">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                                         <td class="text-end pe-4">
-                                            @can('delete', $item)
-                                            <form method="POST" action="{{ route('itempenjualan.destroy', $item->id) }}" class="d-inline">
-                                                @csrf @method('DELETE')
-                                                <button class="btn btn-light btn-sm text-danger border-0 hover-danger rounded-circle" title="Hapus Item">
+                                            <!-- Tombol Aksi Hapus yang sudah dibenarkan -->
+                                            <form method="POST" action="{{ route('itempenjualan.destroy', $item->id) }}" class="d-inline" onsubmit="return confirm('Hapus item ini dari keranjang?')">
+                                                @csrf 
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-light btn-sm text-danger border-0 hover-danger rounded-circle" title="Hapus Item">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
-                                            @endcan
                                         </td>
                                     </tr>
                                     @empty

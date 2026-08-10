@@ -182,6 +182,23 @@
         </div>
 
         <div class="user-body-bakery">
+
+            <!-- NOTIFIKASI BERHASIL PERBARUI DATA -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show mb-4 rounded-3" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <!-- NOTIFIKASI JIKA TIDAK ADA PERUBAHAN DATA -->
+            @if(session('info'))
+                <div class="alert alert-warning alert-dismissible fade show mb-4 rounded-3 text-dark" role="alert" style="background-color: #fff3cd; border-color: #ffeeba;">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i> {{ session('info') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <form action="{{ route('admin.users.update', $user) }}" method="POST">
                 @csrf
                 @method('PUT')

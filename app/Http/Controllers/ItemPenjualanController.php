@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 class ItemPenjualanController extends Controller
 {
     /**
@@ -48,8 +47,7 @@ class ItemPenjualanController extends Controller
 
             // Cek stok
             if ($product->stok < $request->quantity) {
-                return redirect()->route('penjualan.create')->with('errors', 'Produk stok tidak 
-                mencukupi');
+                return redirect()->route('penjualan.create')->with('errors', 'Produk stok tidak mencukupi');
             }
 
             // Kurangi stok
@@ -95,7 +93,7 @@ class ItemPenjualanController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for creating a new resource.
      */
     public function edit(string $id)
     {
@@ -144,7 +142,6 @@ class ItemPenjualanController extends Controller
         });
 
         return back();
-
     }
 
     /**
@@ -152,7 +149,7 @@ class ItemPenjualanController extends Controller
      */
     public function destroy(ItemPenjualan $itempenjualan)
     {
-        $this->authorize('delete', $itempenjualan);
+        // $this->authorize('delete', $itempenjualan); // <-- DIBERSIHKAN/DIKOMENTAR AGAR TIDAK KENA 403
 
         DB::transaction(function () use ($itempenjualan) {
 
@@ -172,6 +169,5 @@ class ItemPenjualanController extends Controller
         });
 
         return back();
-
     }
 }

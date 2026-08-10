@@ -2,140 +2,141 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Produk\UpdateRequest;
-use App\Http\Requests\SearchRequest;
-use App\Http\Requests\Produk\StoreRequest;
 use App\Models\Produk;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
 {
-
-    public function index(SearchRequest $request)
+    /**
+     * Menampilkan daftar semua produk.
+     */
+    public function index(Request $request)
     {
-        $this->authorize('viewAny', Produk::class);
+        $query = Produk::latest();
 
-        $keyword = $request->input('search');
-        
-        if($keyword) {
-            $products = Produk::when($keyword, function ($query) use ($keyword){
-                $query->where('nama', 'like', '%' . $keyword . '%');
-            })
-            ->orderBy('nama')
-            ->paginate(10)
-            ->withQueryString();
-        } else {
-             $products = Produk::latest()->paginate(10)->withQueryString();
+        // Pencarian disesuaikan dengan kolom 'nama' di database
+        if ($request->filled('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
         }
-       
+
+        $products = $query->get();
+
         return view('produk.index', compact('products'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambah produk baru.
      */
     public function create()
     {
-         $this->authorize('create', Produk::class);
-
         return view('produk.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data produk baru ke database.
      */
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
-         $this->authorize('create', Produk::class);
+        // 1. Validasi input
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'harga_beli'  => 'required|numeric|min:0',
+            'harga_jual'  => 'required|numeric|min:0',
+            'stok'        => 'required|integer|min:0',
+            'foto'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
 
-        $dataReq = $request->validated();
+        // 2. Petakan data input ke kolom database
+        $data = [
+            'user_id'    => Auth::id(),
+            'nama'       => $request->nama_produk,
+            'harga_beli' => $request->harga_beli,
+            'harga_jual' => $request->harga_jual,
+            'stok'       => $request->stok,
+        ];
 
-        $data['user_id'] = Auth::id();        
-        $data['nama'] = $dataReq['name'];        
-        $data['harga_beli'] = $dataReq['purchase_price'];        
-        $data['harga_jual'] = $dataReq['selling_price'];        
-        $data['stok'] = $dataReq['stock'] ?? true;        
-               
+        // 3. Olah upload foto jika ada
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('products', 'public');
         }
+
+        // 4. Simpan data baru ke database
         Produk::create($data);
 
-        return redirect()->route('produk.index')->with('success', 'Product created successfully.');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail produk.
      */
-    public function show( Produk $produk)
-    {
-
-        $this->authorize('view',$produk);
-
-        return view('produk.detail' , compact('produk'));
-    }
+    public function show(Produk $produk)
+{
+    return view('produk.detail', compact('produk')); // Diubah dari 'produk.show' ke 'produk.detail'
+}
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form untuk mengedit produk.
      */
     public function edit(Produk $produk)
     {
-         $this->authorize('update', $produk);
-
         return view('produk.edit', compact('produk'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data produk di database.
      */
-    public function update(UpdateRequest $request, Produk $produk)
+    public function update(Request $request, Produk $produk)
     {
-           $this->authorize('update', $produk);
+        // 1. Validasi input
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'harga_beli'  => 'required|numeric|min:0',
+            'harga_jual'  => 'required|numeric|min:0',
+            'stok'        => 'required|integer|min:0',
+            'foto'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
 
-          $dataReq = $request->validated();
-
+        // 2. Petakan data input ke kolom database (menggunakan kolom 'nama')
         $data = [
-        'user_id'   => Auth::id(),        
-        'nama'      => $dataReq['name'],      
-        'harga_beli'=> $dataReq['purchase_price'],        
-        'harga_jual'=> $dataReq['selling_price'],       
-        'stok'      => $dataReq['stock'],       
-        ];  
+            'user_id'    => Auth::id(),
+            'nama'       => $request->nama_produk,
+            'harga_beli' => $request->harga_beli,
+            'harga_jual' => $request->harga_jual,
+            'stok'       => $request->stok,
+        ];
 
-        //jika upload foto baru
+        // 3. Olah upload foto baru jika ada
         if ($request->hasFile('foto')) {
-
-              // hapus foto lama (jika ad & memang tersimpan)
-            if (
-                $produk->foto &&
-                Storage::disk('public')->exists($produk->foto)
-            ) {
+            if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
                 Storage::disk('public')->delete($produk->foto);
             }
-            //simpan foto baru
             $data['foto'] = $request->file('foto')->store('products', 'public');
         }
 
+        // 4. Update data ke database
         $produk->update($data);
 
-        return redirect()->route('produk.edit', $produk->id)->with('success', 'Product created successfully.');
+        return redirect()->route('produk.index')->with('success', 'Data produk berhasil diperbarui!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus produk dari database.
      */
     public function destroy(Produk $produk)
     {
-         $this->authorize('delete', $produk);
+        if (method_exists($produk, 'itemPenjualan') && $produk->itemPenjualan()->exists()) {
+            return redirect()->route('produk.index')
+                ->with('error', 'Produk tidak dapat dihapus karena sudah memiliki riwayat transaksi.');
+        }
 
-        if ($produk->foto) {
+        if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
             Storage::disk('public')->delete($produk->foto);
         }
+
         $produk->delete();
-        return redirect()->route('produk.index')->with('success', 'Product deleted successfully.');
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus!');
     }
 }

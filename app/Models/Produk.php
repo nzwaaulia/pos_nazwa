@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Produk extends Model
 {
-     use HasFactory;
+    use HasFactory;
 
-     protected $table = 'produk';
+    protected $table = 'produk';
 
     protected $fillable = [
         'user_id',
@@ -19,14 +19,15 @@ class Produk extends Model
         'harga_jual',
         'stok',
     ];
-    
-      public function user()
+
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
     public function itemPenjualan()
     {
-        return $this->hasMany(ItemPenjualan::class, 'user_id');
+        // DIPERBAIKI: Menggunakan 'produk_id' bukan 'user_id'
+        return $this->hasMany(ItemPenjualan::class, 'produk_id');
     }
 }

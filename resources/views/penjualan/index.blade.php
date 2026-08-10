@@ -6,7 +6,6 @@
 
 @include('layouts.navbar')
 
-<!-- Custom Bakery Theme Penjualan Styling -->
 <style>
     :root {
         --bakery-mocha: #4a3525;
@@ -169,18 +168,31 @@
 </style>
 
 <div class="page-wrapper">
-    <div class="container">
+    <div class="container-fluid px-4">
 
-        @if(session('errors'))
-        <div class="alert alert-danger rounded-4 border-0 shadow-sm">
-            {{ session('errors') }}
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert" style="background-color: #d1e7dd; color: #0f5132;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                <div>{{ session('success') }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
 
-        <!-- Hero Section -->
+        @if(session('error') || session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert" style="background-color: #f8d7da; color: #842029;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                <div>{{ session('error') ?? session('errors') }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
         <div class="hero-penjualan mb-4">
             <span class="badge bg-white px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
-                💰 Transaksi Kasir
+                🥐 Mini Bites Bakery
             </span>
             <h1 class="fw-bold mb-1" style="font-family: serif;">Halaman Penjualan</h1>
             <p class="mb-4 text-white-50 small">
@@ -192,7 +204,6 @@
             </a>
         </div>
 
-        <!-- Main Card List -->
         <div class="custom-card">
 
             <div class="p-4 border-bottom border-light">
@@ -297,7 +308,7 @@
                 </table>
             </div>
 
-            <div class="p-4 border-top border-light">
+            <div class="p-4">
                 {{ $sales->links() }}
             </div>
 
