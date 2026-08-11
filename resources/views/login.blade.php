@@ -107,7 +107,7 @@
         <div class="mb-2">
             <i class="bi bi-cake2 fs-1 text-white"></i>
         </div>
-        <h3>Mini Bites Bakery</h3>
+        <h3>Mini Bites Bakery 🍰</h3>
         <p>Masuk untuk mengelola kue dan roti favoritmu</p>
     </div>
     
