@@ -18,21 +18,35 @@
         background-color: #fff0f3;
         box-sizing: border-box;
     }
-</style>
+    </style>
     <meta charset="UTF-8">
-    <!-- Isi title yang dikirimkan dari views lain -->
     <title>@yield('title')</title>
-    <!-- Memanggil link bootstrap -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 
-    <!-- NAVBAR DITAROH DI LUAR CONTAINER AGAR FULL LEBARNYA -->
-   
-    <!-- KONTEN UTAMA -->
     <div class="container-fluid px-0">
         @yield('content')
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: "{{ session('success') }}",
+            timer: 5000, // Otomatis hilang dalam 5000 milidetik (5 detik)
+            timerProgressBar: true,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end', // Tampil di pojok kanan atas
+            background: '#ffffff',
+            color: '#333333'
+        });
+    </script>
+    @endif
 
 </body>
 </html>

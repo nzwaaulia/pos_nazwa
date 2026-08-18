@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm px-3" style="background-color: #5C3D2E;">
   <div class="container-fluid">
     <!-- Brand / Logo -->
-    <a class="navbar-brand fw-bold" href="#">Aplikasi POS</a>
+    <a class="navbar-brand fw-bold" href="#">Mini Bites Bakery 🍰</a>
     
     <!-- Tombol Toggle untuk Tampilan Mobile/Layar Kecil -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,6 +22,10 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {{ Request::is('penjualan') ? 'active' : '' }}" href="{{ route('penjualan.index') }}">Penjualan</a>
+        </li>
+        <!-- TAMBAHKAN MENU TENTANG DI SINI -->
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('tentang') ? 'active' : '' }}" href="{{ route('tentang') }}">Tentang Saya</a>
         </li>
       </ul>
       
