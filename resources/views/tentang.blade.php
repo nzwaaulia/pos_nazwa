@@ -11,7 +11,7 @@
             <div class="card h-100 shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
                 <div class="card-header fw-bold text-white py-3" style="background-color: #5C3D2E;">👤 Tentang Saya</div>
                 <div class="card-body text-center bg-light">
-                    <img src="{{ asset('images/cookies lotus.jpg') }}" class="rounded-circle mb-3 shadow" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #5C3D2E;">
+                    <img src="{{ asset('images/logotoko.png') }}" class="rounded-circle mb-3 shadow" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #5C3D2E;">
                     <h5 class="fw-bold text-dark">Nazwa Aulia Fahra</h5>
                     <p class="text-muted small">Pengembang & Pemilik Mini Bites Bakery</p>
                     <p class="text-secondary small">Saya adalah pengembang aplikasi ini yang berfokus pada efisiensi manajemen toko cookies dan cupcake.</p>
