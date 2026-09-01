@@ -93,7 +93,7 @@
         border: 1px solid #f0eae1;
     }
 
-    /* Tombol Kembali */
+    /* Tombol Kembali & Cetak */
     .btn-back {
         background: #ffffff;
         color: #4a3525;
@@ -113,20 +113,46 @@
         color: #6f4e37;
         transform: translateY(-2px);
     }
+
+    /* CSS Khusus Mode Print Printer Kasir/Struk */
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .d-print-none {
+            display: none !important;
+        }
+        .receipt-print-area, .receipt-print-area * {
+            visibility: visible;
+        }
+        .receipt-print-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+    }
 </style>
 
 <div class="page-wrapper">
     <div class="container">
         
-        <!-- Tombol Kembali -->
-        <div class="mb-4">
+        <!-- Tombol Navigasi & Cetak Struk (Sembunyi saat diprint) -->
+        <div class="d-flex justify-content-between align-items-center mb-4 d-print-none">
             <a href="{{ route('penjualan.index') }}" class="btn-back">
                 <i class="bi bi-arrow-left me-2"></i> Kembali ke Daftar Penjualan
             </a>
+            <button onclick="window.print()" class="btn text-white fw-bold shadow-sm" style="background-color: var(--bakery-green); border-radius: 12px; padding: 0.65rem 1.5rem;">
+                <i class="bi bi-printer me-2"></i> Cetak Struk
+            </button>
         </div>
 
         <!-- Kartu Informasi Utama -->
-        <div class="info-card">
+        <div class="info-card d-print-none">
             <div class="info-header d-flex justify-content-between align-items-center">
                 <h3><i class="bi bi-receipt me-2"></i> Detail Transaksi Penjualan</h3>
                 <span class="badge bg-white px-3 py-2 rounded-pill shadow-sm fw-bold" style="color: #4a3525;">
@@ -163,8 +189,8 @@
             </div>
         </div>
 
-        <!-- Tabel Daftar Produk -->
-        <div class="table-card">
+        <!-- Tabel Daftar Produk (Tampilan Layar Web) -->
+        <div class="table-card d-print-none">
             <h5 class="fw-bold mb-4 px-2" style="color: #4a3525; font-family: serif;">
                 <i class="bi bi-basket me-2" style="color: #d4a373;"></i> Produk Roti yang Dibeli
             </h5>
@@ -215,6 +241,51 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- AREA STRUK THERMAL (Khusus Untuk Dicetak Printer Kasir) -->
+        <div class="receipt-print-area d-none d-print-block mx-auto" style="max-width: 350px; font-family: 'Courier New', Courier, monospace; color: #000;">
+            <div class="text-center mb-3">
+                <h4 class="fw-bold mb-0">Sweet Crumbs Bakery</h4>
+                <p class="small mb-0">Jl. Roti Lezat No. 88, Bandung</p>
+                <p class="small mb-0">Telp: 0812-3456-7890</p>
+                <p class="mb-0">--------------------------------</p>
+            </div>
+
+            <div class="small mb-2">
+                <div>No Nota : #{{ $sale->id }}</div>
+                <div>Tanggal : {{ optional($sale->created_at)->format('d/m/Y H:i') }}</div>
+                <div>Kasir   : {{ optional($sale->user)->name ?? 'Kasir' }}</div>
+                <div>Bayar   : {{ $sale->metode_pembayaran ?? 'CASH' }}</div>
+            </div>
+
+            <p class="mb-1">--------------------------------</p>
+
+            <table style="width: 100%; font-size: 13px;">
+                @foreach($sale->itemPenjualan as $item)
+                <tr>
+                    <td colspan="3" class="fw-bold">{{ optional($item->produk)->nama ?? 'Produk' }}</td>
+                </tr>
+                <tr>
+                    <td>{{ $item->kuantitas }} x Rp {{ number_format($item->produk->harga_jual ?? 0, 0, ',', '.') }}</td>
+                    <td class="text-end" style="text-align: right;">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                </tr>
+                @endforeach
+            </table>
+
+            <p class="mb-1">--------------------------------</p>
+
+            <div class="d-flex justify-content-between fw-bold fs-6" style="display: flex; justify-content-space-between;">
+                <span>TOTAL:</span>
+                <span>Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}</span>
+            </div>
+
+            <p class="mb-2">--------------------------------</p>
+
+            <div class="text-center small">
+                <p class="mb-0">Terima Kasih Telah Berbelanja!</p>
+                <p class="mb-0">Nikmati Kelezatan Roti Kami 🍞</p>
             </div>
         </div>
 
