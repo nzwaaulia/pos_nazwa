@@ -199,11 +199,6 @@
         color: #8c857b;
     }
 
-    .price-buy {
-        color: #a39b8e;
-        text-decoration: line-through;
-    }
-
     .price-sell {
         color: #2e7d32;
         font-weight: 800;
@@ -325,7 +320,7 @@
             🥐 Mini Bites Bakery
         </div>
         <h1 class="hero-title">Halaman Produk</h1>
-        <p class="hero-subtitle">Kelola inventaris, harga beli, harga jual, dan stok varian kue toko Anda.</p>
+        <p class="hero-subtitle">Kelola inventaris, harga jual, dan stok varian kue toko Anda.</p>
         
         <a href="{{ route('produk.create') }}" class="btn-hero-add">
             <i class="bi bi-plus-circle-fill"></i> Tambah Produk
@@ -359,11 +354,6 @@
 
                 <div class="badge-user">
                     👤 {{ $product->user->name ?? 'Admin' }}
-                </div>
-
-                <div class="price-row">
-                    <span class="price-label">Beli:</span>
-                    <span class="price-buy">Rp {{ number_format($product->harga_beli ?? 0, 0, ',', '.') }}</span>
                 </div>
 
                 <div class="price-row">
