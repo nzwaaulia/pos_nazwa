@@ -118,6 +118,11 @@
         position: relative;
     }
 
+    .qris-header-logo {
+        height: 24px;
+        object-fit: contain;
+    }
+
     .qris-badge-national {
         font-size: 0.65rem;
         font-weight: 700;
@@ -335,14 +340,7 @@
                             <div id="section-qris" class="d-none mb-3">
                                 <div class="qris-card">
                                     <div class="d-flex justify-content-between align-items-center mb-2 px-1">
-                                        <!-- Vector SVG Resmi QRIS -->
-                                        <svg height="22" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 0H70V70H0V0ZM18 18V52H52V18H18Z" fill="#ED1C24"/>
-                                            <path d="M28 28H42V42H28V28Z" fill="#231F20"/>
-                                            <path d="M85 10H103V60H85V10Z" fill="#ED1C24"/>
-                                            <path d="M110 10H135C148 10 156 18 156 30C156 40 148 48 135 48H122V60H110V10ZM122 21V37H133C139 37 143 34 143 29C143 24 139 21 133 21H122Z" fill="#231F20"/>
-                                            <path d="M165 10H182L195 40V10H207V60H190L177 30V60H165V10Z" fill="#ED1C24"/>
-                                        </svg>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/QRIS_logo.svg" alt="QRIS Logo" class="qris-header-logo">
                                         <span class="qris-badge-national">GPN</span>
                                     </div>
                                     

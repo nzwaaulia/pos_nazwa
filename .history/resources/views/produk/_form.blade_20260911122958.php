@@ -119,7 +119,7 @@
 
 <!-- Input Harga Beli -->
 <div class="mb-3">
-    <label for="harga_beli" class="form-label">Harga Pokok</label>
+    <label for="harga_beli" class="form-label">Harga </label>
     <input type="number" 
            class="form-control @error('harga_beli') is-invalid @enderror" 
            id="harga_beli" 

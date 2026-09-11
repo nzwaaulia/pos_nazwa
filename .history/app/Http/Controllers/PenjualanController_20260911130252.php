@@ -124,11 +124,11 @@ class PenjualanController extends Controller
         ]);
 
         if ($penjualan->status !== 'OPEN') {
-            return back()->withErrors(['msg' => 'Transaksi sudah diproses']);
+            return back()->with('errors', 'Transaksi sudah diproses');
         }
 
         if ($penjualan->itempenjualan()->count() === 0) {
-            return back()->withErrors(['msg' => 'Keranjang masih kosong']);
+            return back()->with('errors', 'Keranjang masih kosong');
         }
 
         // Hitung ulang total pembayaran dari item keranjang (anti manipulasi client)
@@ -139,7 +139,7 @@ class PenjualanController extends Controller
         if ($request->metode_pembayaran === 'CASH') {
             // Cek apakah nominal uang tunai mencukupi
             if ($bayar < $total) {
-                return back()->withErrors(['msg' => 'Uang pembayaran kurang dari total tagihan!']);
+                return back()->with('errors', 'Uang pembayaran kurang dari total tagihan!');
             }
             $kembali = $bayar - $total;
         } else if ($request->metode_pembayaran === 'QRIS') {
@@ -174,7 +174,7 @@ class PenjualanController extends Controller
         if ($penjualan->status !== 'OPEN') {
             return redirect()
                 ->route('penjualan.index')
-                ->withErrors(['msg' => 'Transaksi sudah selesai tidak bisa dibatalkan']);
+                ->with('errors', 'Transaksi sudah selesai tidak bisa dibatalkan');
         }
 
         DB::transaction(function () use ($penjualan) {

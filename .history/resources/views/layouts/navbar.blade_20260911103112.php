@@ -15,17 +15,21 @@
           <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="{{ route('dashboard') }}">Beranda</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link {{ Request::is('admin/users') ? 'active' : '' }}" href="{{ route('admin.users') }}">Akun</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link {{ Request::is('produk') ? 'active' : '' }}" href="{{ route('produk.index') }}">Produk</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {{ Request::is('penjualan') ? 'active' : '' }}" href="{{ route('penjualan.index') }}">Penjualan</a>
         </li>
+        <!-- TAMBAHKAN MENU TENTANG DI SINI -->
         <li class="nav-item">
           <a class="nav-link {{ Request::is('tentang') ? 'active' : '' }}" href="{{ route('tentang') }}">Tentang Saya</a>
         </li>
       </ul>
       
-      <!-- Tombol Logout -->
+      <!-- Tombol Logout (Diperbaiki agar tidak terpotong di kanan) -->
       <form action="{{ route('logout') }}" method="POST" class="d-flex my-2 my-lg-0">
         @csrf
         <button type="submit" class="btn btn-danger btn-sm px-3 fw-medium">Keluar</button>

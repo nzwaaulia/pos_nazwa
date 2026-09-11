@@ -117,43 +117,25 @@ class PenjualanController extends Controller
      */
     public function update(Request $request, Penjualan $penjualan)
     {
-        // Validasi input dari form
         $request->validate([
-            'metode_pembayaran' => 'required|in:CASH,QRIS',
-            'bayar'             => 'nullable|numeric|min:0'
+            'payment_method' => 'required|in:CASH,QRIS'
         ]);
 
         if ($penjualan->status !== 'OPEN') {
-            return back()->withErrors(['msg' => 'Transaksi sudah diproses']);
+            return back()->with('errors', 'Transaksi sudah diproses');
         }
 
         if ($penjualan->itempenjualan()->count() === 0) {
-            return back()->withErrors(['msg' => 'Keranjang masih kosong']);
+            return back()->with('errors', 'Keranjang masih kosong');
         }
 
-        // Hitung ulang total pembayaran dari item keranjang (anti manipulasi client)
-        $total = $penjualan->itempenjualan()->sum('subtotal');
-        $bayar = $request->input('bayar', 0);
-        $kembali = 0;
+        DB::transaction(function () use ($penjualan, $request) {
+            // Hitung ulang total (anti manipulasi)
+            $total = $penjualan->itempenjualan()->sum('subtotal');
 
-        if ($request->metode_pembayaran === 'CASH') {
-            // Cek apakah nominal uang tunai mencukupi
-            if ($bayar < $total) {
-                return back()->withErrors(['msg' => 'Uang pembayaran kurang dari total tagihan!']);
-            }
-            $kembali = $bayar - $total;
-        } else if ($request->metode_pembayaran === 'QRIS') {
-            // Jika QRIS, anggap uang pas
-            $bayar = $total;
-            $kembali = 0;
-        }
-
-        DB::transaction(function () use ($penjualan, $request, $total, $bayar, $kembali) {
             $penjualan->update([
-                'metode_pembayaran' => $request->metode_pembayaran,
+                'metode_pembayaran' => $request->payment_method,
                 'total_pembayaran'  => $total,
-                'bayar'             => $bayar,
-                'kembali'           => $kembali,
                 'status'            => 'COMPLETED'
             ]);
         });
@@ -174,7 +156,7 @@ class PenjualanController extends Controller
         if ($penjualan->status !== 'OPEN') {
             return redirect()
                 ->route('penjualan.index')
-                ->withErrors(['msg' => 'Transaksi sudah selesai tidak bisa dibatalkan']);
+                ->with('errors', 'Transaksi sudah selesai tidak bisa dibatalkan');
         }
 
         DB::transaction(function () use ($penjualan) {

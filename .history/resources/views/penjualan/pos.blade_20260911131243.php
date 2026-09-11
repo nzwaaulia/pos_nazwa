@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'POS Kasir - Mini Bites Bakery')
+@section('title', 'POS Kasir - Sweet Crumbs Bakery')
 
 @section('content')
 
@@ -106,27 +106,6 @@
     .hover-danger:hover {
         background-color: #fdf2f2 !important;
     }
-
-    /* Standardized Authentic QRIS Card Styling */
-    .qris-card {
-        background: #ffffff;
-        border: 2px solid #e0e0e0;
-        border-radius: 16px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-        padding: 1.25rem;
-        text-align: center;
-        position: relative;
-    }
-
-    .qris-badge-national {
-        font-size: 0.65rem;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        color: #d32f2f;
-        text-transform: uppercase;
-        border-bottom: 1px dashed #d32f2f;
-        padding-bottom: 2px;
-    }
 </style>
 
 <div class="page-wrapper">
@@ -160,13 +139,13 @@
 
         <div class="row g-4">
 
-            <!-- DAFTAR PRODUK KUE (KIRI) -->
+            <!-- ====================== DAFTAR PRODUK KUE (KIRI) ============================ -->
             <div class="col-lg-7">
                 <div class="pos-card p-4 h-100">
                     
                     <!-- Form Pencarian Produk -->
                     <div class="mb-4">
-                        <form method="GET" action="{{ route('penjualan.create') }}" id="search-form">
+                        <form method="GET" action="{{ route('penjualan.create') }}">
                             <div class="input-group search-input-group shadow-sm">
                                 <span class="input-group-text bg-white border-0 text-muted ps-3">
                                     <i class="bi bi-search"></i>
@@ -176,7 +155,7 @@
                                        value="{{ request('search') }}"
                                        class="form-control ps-2"
                                        placeholder="Cari varian kue atau pastry..."
-                                       id="search-input">
+                                       onkeyup="this.form.submit()">
                             </div>
                         </form>
                     </div>
@@ -184,7 +163,7 @@
                     <!-- Grid Produk Kue -->
                     <div class="product-list-container" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
                         <div class="row g-3">
-                            @forelse($products as $product)
+                            @foreach($products as $product)
                             <div class="col-md-6">
                                 <form method="POST" action="{{ route('itempenjualan.store') }}" class="card product-card h-100">
                                     @csrf
@@ -222,19 +201,14 @@
                                     </div>
                                 </form>
                             </div>
-                            @empty
-                            <div class="col-12 text-center py-5 text-muted">
-                                <i class="bi bi-search fs-1 text-secondary"></i>
-                                <p class="mt-2 mb-0">Produk tidak ditemukan.</p>
-                            </div>
-                            @endforelse
+                            @endforeach
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- KERANJANG BELANJA (KANAN) -->
+            <!-- ================================ KERANJANG BELANJA (KANAN) =========================== -->
             <div class="col-lg-5">
                 <div class="pos-card h-100 d-flex flex-column">
                     <div class="card-header bg-white border-0 py-3 px-4 border-bottom">
@@ -254,8 +228,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(isset($sale) && $sale && $sale->itemPenjualan && $sale->itemPenjualan->count() > 0)
-                                    @foreach($sale->itemPenjualan as $item)
+                                @if(isset($sale) && $sale && $sale->itemPenjualan)
+                                    @forelse($sale->itemPenjualan as $item)
                                     <tr>
                                         <td class="ps-4">
                                             <div class="fw-semibold" style="color: #4a3525;">{{ $item->produk->nama }}</div>
@@ -283,7 +257,14 @@
                                             </form>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5 text-muted">
+                                            <i class="bi bi-cart-x fs-1 d-block mb-2 text-warning"></i>
+                                            <p class="mb-0 small">Keranjang belanja kue masih kosong.</p>
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 @else
                                     <tr>
                                         <td colspan="4" class="text-center py-5 text-muted">
@@ -314,57 +295,27 @@
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-muted">Metode Pembayaran</label>
                                 <select name="metode_pembayaran" id="metode_pembayaran" class="form-select shadow-sm" required style="border-radius: 12px; border: 2px solid #f0eae1;" onchange="togglePaymentSection()">
-                                    <option value="CASH" selected>Cash (Tunai)</option>
+                                    <option value="">-- Pilih Metode Pembayaran --</option>
+                                    <option value="CASH">Cash (Tunai)</option>
                                     <option value="QRIS">QRIS</option>
                                 </select>
                             </div>
 
-                            <!-- Section Input Uang Cash -->
-                            <div id="section-cash" class="mb-3 p-3 rounded" style="background-color: #f7f4ef; border: 1px solid #e8e3dc;">
+                            <!-- Section Input Uang Cash (Default Sembunyi) -->
+                            <div id="section-cash" class="d-none mb-3 p-3 rounded" style="background-color: #f7f4ef; border: 1px solid #e8e3dc;">
                                 <label class="form-label small fw-bold" style="color: var(--bakery-mocha);">Uang Diterima (Rp)</label>
-                                <input type="number" id="cash_given" name="cash_given" class="form-control mb-2 shadow-sm" placeholder="Masukkan jumlah uang (misal: 50000)" style="border-radius: 10px;" oninput="calculateChange()" required>
-                                <input type="hidden" name="bayar" id="bayar_hidden" value="0">
-
+                                <input type="number" id="cash_given" name="cash_given" class="form-control mb-2 shadow-sm" placeholder="Contoh: 50000" style="border-radius: 10px;" oninput="calculateChange()">
+                                
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <span class="small fw-bold text-muted">Kembalian:</span>
                                     <span id="change_amount" class="fw-bold fs-5 text-success">Rp 0</span>
                                 </div>
                             </div>
 
-                            <!-- Section Authentic QRIS Display Card -->
-                            <div id="section-qris" class="d-none mb-3">
-                                <div class="qris-card">
-                                    <div class="d-flex justify-content-between align-items-center mb-2 px-1">
-                                        <!-- Vector SVG Resmi QRIS -->
-                                        <svg height="22" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 0H70V70H0V0ZM18 18V52H52V18H18Z" fill="#ED1C24"/>
-                                            <path d="M28 28H42V42H28V28Z" fill="#231F20"/>
-                                            <path d="M85 10H103V60H85V10Z" fill="#ED1C24"/>
-                                            <path d="M110 10H135C148 10 156 18 156 30C156 40 148 48 135 48H122V60H110V10ZM122 21V37H133C139 37 143 34 143 29C143 24 139 21 133 21H122Z" fill="#231F20"/>
-                                            <path d="M165 10H182L195 40V10H207V60H190L177 30V60H165V10Z" fill="#ED1C24"/>
-                                        </svg>
-                                        <span class="qris-badge-national">GPN</span>
-                                    </div>
-                                    
-                                    <div class="fw-bold text-dark fs-6 mt-1 mb-0">MINI BITES BAKERY</div>
-                                    <div class="text-muted" style="font-size: 0.7rem;">NMID: ID1029384756102</div>
-
-                                    <!-- Auto Dynamic Generated QR Code -->
-                                    <div class="my-3 p-2 bg-white d-inline-block rounded-3 border shadow-sm">
-                                        <img id="qris-image" 
-                                             src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://minibitesbakery.id/pay?total={{ optional($sale)->total_pembayaran ?? 0 }}" 
-                                             alt="QR Code Pembayaran" 
-                                             style="width: 150px; height: 150px; display: block;">
-                                    </div>
-
-                                    <div class="small fw-bold text-dark mb-1">
-                                        Total: <span style="color: #606c38;">Rp {{ number_format(optional($sale)->total_pembayaran ?? 0, 0, ',', '.') }}</span>
-                                    </div>
-                                    
-                                    <div class="text-muted" style="font-size: 0.68rem;">
-                                        <i class="bi bi-shield-check text-success me-1"></i> Menerima BCA, Mandiri, GoPay, OVO, ShopeePay, Dana & LinkAja
-                                    </div>
-                                </div>
+                            <!-- Section QRIS (Default Sembunyi) -->
+                            <div id="section-qris" class="d-none mb-3 p-3 text-center rounded" style="background-color: #f7f4ef; border: 1px solid #e8e3dc;">
+                                <i class="bi bi-qr-code-scan fs-1 d-block mb-2" style="color: var(--bakery-mocha);"></i>
+                                <span class="small fw-bold text-muted">Silakan scan QRIS di meja kasir.</span>
                             </div>
 
                             <button type="submit" class="btn btn-checkout w-100 py-2.5 fw-semibold {{ optional($sale)->status === 'COMPLETED' ? 'disabled' : '' }}">
@@ -374,7 +325,7 @@
 
                         @can('delete', $sale)
                         <form action="{{ route('penjualan.destroy', $sale->id) }}"
-                              method="POST"
+                         method="POST"
                               onsubmit="return confirm('Yakin ingin membatalkan seluruh transaksi ini?')">
                             @csrf
                             @method('DELETE')
@@ -413,19 +364,18 @@
             sectionQris.classList.remove('d-none');
             sectionCash.classList.add('d-none');
             inputCash.required = false;
-            inputCash.value = grandTotal; // Set nominal otomatis jika via QRIS
+        } else {
+            sectionCash.classList.add('d-none');
+            sectionQris.classList.add('d-none');
+            inputCash.required = false;
         }
-        calculateChange();
     }
 
     function calculateChange() {
         const cashGivenInput = document.getElementById('cash_given');
-        const bayarHidden = document.getElementById('bayar_hidden');
         if (!cashGivenInput) return;
 
         const cashGiven = parseFloat(cashGivenInput.value) || 0;
-        if (bayarHidden) bayarHidden.value = cashGiven;
-
         const change = cashGiven - grandTotal;
         const changeDisplay = document.getElementById('change_amount');
 
@@ -442,15 +392,9 @@
 
     function validatePayment() {
         const methodElem = document.getElementById('metode_pembayaran');
-        if (!methodElem) return false;
+        if (!methodElem) return true;
 
         const method = methodElem.value;
-
-        if (!method) {
-            alert('Silakan pilih metode pembayaran terlebih dahulu!');
-            return false;
-        }
-
         if (method === 'CASH') {
             const cashGiven = parseFloat(document.getElementById('cash_given').value) || 0;
             if (cashGiven < grandTotal) {
@@ -459,17 +403,6 @@
             }
         }
         return confirm('Yakin ingin melanjutkan proses checkout pesanan kue?');
-    }
-
-    let searchTimeout;
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                document.getElementById('search-form').submit();
-            }, 600);
-        });
     }
 
     document.addEventListener('DOMContentLoaded', function() {

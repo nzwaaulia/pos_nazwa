@@ -141,7 +141,7 @@
 <div class="page-wrapper">
     <div class="container">
         
-        <!-- Tombol Navigasi & Cetak Struk -->
+        <!-- Tombol Navigasi & Cetak Struk (Sembunyi saat diprint) -->
         <div class="d-flex justify-content-between align-items-center mb-4 d-print-none">
             <a href="{{ route('penjualan.index') }}" class="btn-back">
                 <i class="bi bi-arrow-left me-2"></i> Kembali ke Daftar Penjualan
@@ -189,7 +189,7 @@
             </div>
         </div>
 
-        <!-- Tabel Daftar Produk -->
+        <!-- Tabel Daftar Produk (Tampilan Layar Web) -->
         <div class="table-card d-print-none">
             <h5 class="fw-bold mb-4 px-2" style="color: #4a3525; font-family: serif;">
                 <i class="bi bi-basket me-2" style="color: #d4a373;"></i> Produk Roti yang Dibeli
@@ -242,34 +242,9 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- PERUBAHAN: Rincian Tagihan, Bayar, & Kembalian di Tampilan Web -->
-            @php
-                $bayar = $sale->bayar ?? $sale->cash_given ?? $sale->total_pembayaran;
-                $kembalian = $sale->kembalian ?? ($bayar - $sale->total_pembayaran);
-            @endphp
-            <div class="row justify-content-end mt-4">
-                <div class="col-md-5">
-                    <div class="p-3 rounded-3" style="background-color: #fdfbf7; border: 1px solid #f0eae1;">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted small">Total Tagihan:</span>
-                            <span class="fw-bold" style="color: #4a3525;">Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted small">Uang Dibayar:</span>
-                            <span class="fw-bold text-primary">Rp {{ number_format($bayar, 0, ',', '.') }}</span>
-                        </div>
-                        <hr class="my-2" style="border-top: 1px dashed #d4a373;">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fw-bold small" style="color: #4a3525;">Kembalian:</span>
-                            <span class="fw-bold fs-5" style="color: #606c38;">Rp {{ number_format($kembalian, 0, ',', '.') }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- AREA STRUK THERMAL (Khusus Cetak Printer Kasir) -->
+        <!-- AREA STRUK THERMAL (Khusus Untuk Dicetak Printer Kasir) -->
         <div class="receipt-print-area d-none d-print-block mx-auto" style="max-width: 350px; font-family: 'Courier New', Courier, monospace; color: #000;">
             <div class="text-center mb-3">
                 <h4 class="fw-bold mb-0">Sweet Crumbs Bakery</h4>
@@ -282,7 +257,7 @@
                 <div>No Nota : #{{ $sale->id }}</div>
                 <div>Tanggal : {{ optional($sale->created_at)->format('d/m/Y H:i') }}</div>
                 <div>Kasir   : {{ optional($sale->user)->name ?? 'Kasir' }}</div>
-                <div>Metode  : {{ $sale->metode_pembayaran ?? 'CASH' }}</div>
+                <div>Bayar   : {{ $sale->metode_pembayaran ?? 'CASH' }}</div>
             </div>
 
             <p class="mb-1">--------------------------------</p>
@@ -301,20 +276,9 @@
 
             <p class="mb-1">--------------------------------</p>
 
-            <!-- PERUBAHAN: Rincian Pembayaran pada Struk Print -->
-            <div style="font-size: 13px;">
-                <div class="d-flex justify-content-between fw-bold" style="display: flex; justify-content: space-between;">
-                    <span>TOTAL:</span>
-                    <span>Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}</span>
-                </div>
-                <div class="d-flex justify-content-between" style="display: flex; justify-content: space-between;">
-                    <span>DIBAYAR:</span>
-                    <span>Rp {{ number_format($bayar, 0, ',', '.') }}</span>
-                </div>
-                <div class="d-flex justify-content-between fw-bold" style="display: flex; justify-content: space-between;">
-                    <span>KEMBALI:</span>
-                    <span>Rp {{ number_format($kembalian, 0, ',', '.') }}</span>
-                </div>
+            <div class="d-flex justify-content-between fw-bold fs-6" style="display: flex; justify-content-space-between;">
+                <span>TOTAL:</span>
+                <span>Rp {{ number_format($sale->total_pembayaran, 0, ',', '.') }}</span>
             </div>
 
             <p class="mb-2">--------------------------------</p>
