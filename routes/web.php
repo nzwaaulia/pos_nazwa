@@ -8,20 +8,25 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\Usercontroller;
 
-//route yang bisa diakses ketika user login (tamu)
+// Route yang bisa diakses ketika user belum login (tamu)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 });
 
-//route yang bisa diakses ketika user sudah login
+// Route yang bisa diakses ketika user sudah login
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // -> TAMBAHKAN RUTE TENTANG DI SINI <-
+    // Route Tentang
     Route::get('/tentang', function () {
         return view('tentang');
     })->name('tentang');
+
+    // Route Profil Toko
+    Route::get('/profil-toko', function () {
+        return view('profiltoko');
+    })->name('profiltoko');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

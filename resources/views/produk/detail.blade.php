@@ -4,8 +4,6 @@
 
 @section('content')
 
-@include('layouts.navbar')
-
 <!-- Custom Bakery Theme Detail Styling -->
 <style>
     .page-wrapper {
@@ -118,7 +116,7 @@
         <!-- Header Banner -->
         <div class="hero-title-section text-center">
             <span class="badge bg-white px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
-                🧁  Mini Bites Bakery
+                🧁 Mini Bites Bakery
             </span>
             <h1 class="display-6 fw-bold mb-1" style="font-family: serif;">Informasi Varian Kue</h1>
             <p class="text-white-50 mb-0">Rincian lengkap spesifikasi, harga, dan ketersediaan stok produk.</p>

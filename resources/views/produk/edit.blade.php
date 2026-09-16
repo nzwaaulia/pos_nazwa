@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('layouts.navbar')
+
 
 <!-- Custom Bakery Theme Edit Styling -->
 <style>

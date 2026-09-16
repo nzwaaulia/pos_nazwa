@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('layouts.navbar')
+
 
 <!-- Google Fonts khusus nuansa toko kue yang estetik -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">

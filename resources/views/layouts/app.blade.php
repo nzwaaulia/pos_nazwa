@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>
+    
+    <!-- CDN Bootstrap Icons agar ikon-ikon di website bisa muncul -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -62,6 +66,11 @@
     </style>
 </head>
 <body>
+
+    <!-- NAVBAR HANYA MUNCUL JIKA USER SUDAH LOGIN -->
+    @auth
+        @include('layouts.navbar')
+    @endauth
 
     <div class="container-fluid px-0">
         @yield('content')

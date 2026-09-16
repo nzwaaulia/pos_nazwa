@@ -4,8 +4,6 @@
 
 @section('content')
 
-@include('layouts.navbar')
-
 <style>
     :root {
         --bakery-mocha: #4a3525;
@@ -30,7 +28,6 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* MEMBERI JARAK ANTARA NAVBAR DENGAN DASHBOARD/CONTENT */
     .page-wrapper {
         padding-top: 35px;
         padding-bottom: 40px;
@@ -322,9 +319,12 @@
         <h1 class="hero-title">Halaman Produk</h1>
         <p class="hero-subtitle">Kelola inventaris, harga jual, dan stok varian kue toko Anda.</p>
         
-        <a href="{{ route('produk.create') }}" class="btn-hero-add">
-            <i class="bi bi-plus-circle-fill"></i> Tambah Produk
-        </a>
+        {{-- TOMBOL TAMBAH PRODUK HANYA UNTUK ADMIN (role_id == 1) --}}
+        @if(auth()->user()->role_id == 1)
+            <a href="{{ route('produk.create') }}" class="btn-hero-add">
+                <i class="bi bi-plus-circle-fill"></i> Tambah Produk
+            </a>
+        @endif
 
         <i class="bi bi-shop hero-watermark"></i>
     </div>
@@ -362,21 +362,25 @@
                 </div>
 
                 <div class="action-group">
+                    {{-- TOMBOL DETAIL (BISA DILIHAT SEMUA ROLE) --}}
                     <a href="{{ route('produk.show', $product) }}" class="btn-action-custom btn-card-detail">
                         👁️ Detail
                     </a>
                     
-                    <a href="{{ route('produk.edit', $product) }}" class="btn-action-custom btn-card-edit">
-                        ✏️ Edit
-                    </a>
+                    {{-- TOMBOL EDIT & HAPUS HANYA UNTUK ADMIN (role_id == 1) --}}
+                    @if(auth()->user()->role_id == 1)
+                        <a href="{{ route('produk.edit', $product) }}" class="btn-action-custom btn-card-edit">
+                            ✏️ Edit
+                        </a>
 
-                    <form action="{{ route('produk.destroy', $product) }}" method="POST" class="form-delete-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-action-custom btn-card-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus produk {{ $product->nama ?? $product->nama_produk }}?')" title="Hapus">
-                            🗑️
-                        </button>
-                    </form>
+                        <form action="{{ route('produk.destroy', $product) }}" method="POST" class="form-delete-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-action-custom btn-card-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus produk {{ $product->nama ?? $product->nama_produk }}?')" title="Hapus">
+                                🗑️
+                            </button>
+                        </form>
+                    @endif
                 </div>
 
             </div>

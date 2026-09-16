@@ -4,7 +4,6 @@
 
 @section('content')
 
-@include('layouts.navbar')
 
 <!-- Custom Bakery Theme POS Styling -->
 <style>
