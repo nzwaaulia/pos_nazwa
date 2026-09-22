@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - Sweet Crumbs Bakery')
+@section('title', 'Dashboard - Mini Bites Bakery')
 
 @section('content')
-
-
 
 <!-- Custom Bakery Theme Dashboard Styling -->
 <style>
@@ -105,20 +103,57 @@
         font-weight: 600;
         font-size: 0.8rem;
     }
-</style>
-<div class="dashboard-wrapper">
 
+    /* CSS Khusus Cetak Halaman Laporan / Print Dashboard */
+    @media print {
+        .no-print, .no-print * {
+            display: none !important;
+        }
+        body {
+            background-color: #fff !important;
+        }
+        .dashboard-wrapper {
+            background-color: #fff !important;
+            padding: 0 !important;
+        }
+        .hero-banner-vibrant {
+            background: #4a3525 !important;
+            color: #fff !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .stat-card-purple, .stat-card-teal {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .card-vibrant {
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+        }
+    }
+</style>
+
+<div class="dashboard-wrapper">
     <div class="container-fluid px-4">
 
-        <!-- Hero Banner -->
-        <div class="hero-banner-vibrant mb-5">
-            <span class="badge bg-white text-dark px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
-                🥐 Mini Bites Bakery
-            </span>
-            <h1 class="display-6 fw-bold mb-2" style="font-family: serif;">Mini Bites Bakery</h1>
-            <p class="text-white-50 fs-5 mb-0">
-                <i class="bi bi-calendar-check me-2"></i> Ringkasan Hari Ini: <b>{{ $tanggalHariIni->translatedFormat('l, d F Y') }}</b>
-            </p>
+        <!-- Hero Banner dengan Tombol Print -->
+        <div class="hero-banner-vibrant mb-5 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <span class="badge bg-white text-dark px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
+                    🥐 Mini Bites Bakery
+                </span>
+                <h1 class="display-6 fw-bold mb-2" style="font-family: serif;">Mini Bites Bakery</h1>
+                <p class="text-white-50 fs-5 mb-0">
+                    <i class="bi bi-calendar-check me-2"></i> Ringkasan Hari Ini: <b>{{ $tanggalHariIni->translatedFormat('l, d F Y') }}</b>
+                </p>
+            </div>
+            
+            <!-- TOMBOL PRINT LAPORAN (Sembunyi saat diprint) -->
+            <div class="no-print">
+                <button onclick="window.print()" class="btn btn-light btn-lg px-4 py-2 rounded-pill shadow-sm fw-bold" style="color: #4a3525;">
+                    <i class="bi bi-printer-fill me-2"></i> Print Laporan
+                </button>
+            </div>
         </div>
 
         @can('__viewAny', App\Models\User::class)
@@ -129,7 +164,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0 fw-semibold opacity-75">Total Penjualan Hari Ini</h5>
-                            <div class="bg-white bg-opacity-25 p-3 rounded-4">
+                            <div class="bg-white bg-opacity-25 p-3 rounded-4 no-print">
                                 <i class="bi bi-cash-coin fs-3"></i>
                             </div>
                         </div>
@@ -145,7 +180,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0 fw-semibold opacity-75">Jumlah Transaksi</h5>
-                            <div class="bg-white bg-opacity-25 p-3 rounded-4">
+                            <div class="bg-white bg-opacity-25 p-3 rounded-4 no-print">
                                 <i class="bi bi-bag-check fs-3"></i>
                             </div>
                         </div>
@@ -166,7 +201,7 @@
             <div class="col-md-6">
                 <div class="card card-vibrant h-100">
                     <div class="card-body p-4 d-flex align-items-center">
-                        <div class="bg-success bg-opacity-10 text-success p-3 rounded-4 me-3">
+                        <div class="bg-success bg-opacity-10 text-success p-3 rounded-4 me-3 no-print">
                             <i class="bi bi-wallet2 fs-3"></i>
                         </div>
                         <div>
@@ -182,7 +217,7 @@
             <div class="col-md-6">
                 <div class="card card-vibrant h-100">
                     <div class="card-body p-4 d-flex align-items-center">
-                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-4 me-3">
+                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-4 me-3 no-print">
                             <i class="bi bi-credit-card fs-3"></i>
                         </div>
                         <div>
@@ -238,7 +273,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-3 no-print">
                             {{ $produkStokRendah->links() }}
                         </div>
                     </div>
@@ -280,7 +315,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-3 no-print">
                             {{ $produkStokHabis->links() }}
                         </div>
                     </div>
@@ -289,7 +324,7 @@
         </div>
 
         <!-- Best Seller -->
-        <div class="card card-vibrant">
+        <div class="card card-vibrant mb-5">
             <div class="card-header bg-transparent border-0 pt-4 px-4 pb-0">
                 <h5 class="fw-bold text-dark mb-0" style="font-family: serif;"><i class="bi bi-star-fill text-warning me-2"></i> Produk Terlaris</h5>
             </div>
@@ -324,6 +359,8 @@
                 </div>
             </div>
         </div>
+
+        
 
     </div>
 </div>

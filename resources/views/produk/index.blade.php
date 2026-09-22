@@ -177,10 +177,24 @@
         font-size: 1rem;
         font-weight: 700;
         color: var(--bakery-mocha);
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    /* CSS Tambahan Khusus Deskripsi Produk */
+    .product-description {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+        min-height: 2.6em; /* Agar ukuran tinggi card konsisten */
     }
 
     /* Price Section */
@@ -190,6 +204,7 @@
         align-items: center;
         font-size: 0.8rem;
         margin-bottom: 3px;
+        margin-top: auto;
     }
 
     .price-label {
@@ -317,10 +332,10 @@
             🥐 Mini Bites Bakery
         </div>
         <h1 class="hero-title">Halaman Produk</h1>
-        <p class="hero-subtitle">Kelola inventaris, harga jual, dan stok varian kue toko Anda.</p>
+        <p class="hero-subtitle">Kelola inventaris, harga jual, dan stok varian cookies dan cupcake toko Anda.</p>
         
-        {{-- TOMBOL TAMBAH PRODUK HANYA UNTUK ADMIN (role_id == 1) --}}
-        @if(auth()->user()->role_id == 1)
+        {{-- TOMBOL TAMBAH PRODUK UNTUK ADMIN (1) DAN KASIR (2) --}}
+        @if(in_array(auth()->user()->role_id, [1, 2]))
             <a href="{{ route('produk.create') }}" class="btn-hero-add">
                 <i class="bi bi-plus-circle-fill"></i> Tambah Produk
             </a>
@@ -352,6 +367,11 @@
                     {{ $product->nama ?? $product->nama_produk ?? 'Nama Produk Kue' }}
                 </div>
 
+                {{-- MENAMPILKAN DESKRIPSI PRODUK --}}
+                <div class="product-description" title="{{ $product->deskripsi }}">
+                    {{ $product->deskripsi ?? 'Belum ada deskripsi produk.' }}
+                </div>
+
                 <div class="badge-user">
                     👤 {{ $product->user->name ?? 'Admin' }}
                 </div>
@@ -362,7 +382,7 @@
                 </div>
 
                 <div class="action-group">
-                    {{-- TOMBOL DETAIL (BISA DILIHAT SEMUA ROLE) --}}
+                    {{-- TOMBOL DETAIL (BISA DILIHAT OLEH SEMUA ROLE) --}}
                     <a href="{{ route('produk.show', $product) }}" class="btn-action-custom btn-card-detail">
                         👁️ Detail
                     </a>

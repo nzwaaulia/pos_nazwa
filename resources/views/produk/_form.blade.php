@@ -117,6 +117,19 @@
     @enderror
 </div>
 
+<!-- Input Deskripsi Produk -->
+<div class="mb-3">
+    <label for="deskripsi" class="form-label">Deskripsi Produk</label>
+    <textarea class="form-control @error('deskripsi') is-invalid @enderror" 
+              id="deskripsi" 
+              name="deskripsi" 
+              rows="3" 
+              placeholder="Masukkan deskripsi kue yang menarik...">{{ old('deskripsi', $produk->deskripsi ?? '') }}</textarea>
+    @error('deskripsi')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
 <!-- Input Harga Beli -->
 <div class="mb-3">
     <label for="harga_beli" class="form-label">Harga Pokok</label>

@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 <!-- Custom Bakery Theme POS Styling -->
 <style>
     :root {
@@ -106,7 +105,6 @@
         background-color: #fdf2f2 !important;
     }
 
-    /* Standardized Authentic QRIS Card Styling */
     .qris-card {
         background: #ffffff;
         border: 2px solid #e0e0e0;
@@ -262,7 +260,8 @@
                                         </td>
                                         <td style="width: 80px;">
                                             <form method="POST" action="{{ route('itempenjualan.update', $item->id) }}">
-                                                @csrf @method('PUT')
+                                                @csrf 
+                                                @method('PUT')
                                                 <input type="number" name="quantity"
                                                        value="{{ $item->kuantitas }}"
                                                        min="1"
@@ -330,16 +329,15 @@
                                 </div>
                             </div>
 
-                            <!-- Section Authentic QRIS Display Card -->
+                            <!-- Section QRIS -->
                             <div id="section-qris" class="d-none mb-3">
                                 <div class="qris-card">
                                     <div class="d-flex justify-content-between align-items-center mb-2 px-1">
-                                        <!-- Vector SVG Resmi QRIS -->
                                         <svg height="22" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M0 0H70V70H0V0ZM18 18V52H52V18H18Z" fill="#ED1C24"/>
                                             <path d="M28 28H42V42H28V28Z" fill="#231F20"/>
                                             <path d="M85 10H103V60H85V10Z" fill="#ED1C24"/>
-                                            <path d="M110 10H135C148 10 156 18 156 30C156 40 148 48 135 48H122V60H110V10ZM122 21V37H133C139 37 143 34 143 29C143 24 139 21 133 21H122Z" fill="#231F20"/>
+                                            <path d="M110 10H135C148 10 156 18 156 30C156 40 148 48 135 48H122V60H110V10ZM122 21V37H133C139 37 143 29 143 29C143 24 139 21 133 21H122Z" fill="#231F20"/>
                                             <path d="M165 10H182L195 40V10H207V60H190L177 30V60H165V10Z" fill="#ED1C24"/>
                                         </svg>
                                         <span class="qris-badge-national">GPN</span>
@@ -348,7 +346,6 @@
                                     <div class="fw-bold text-dark fs-6 mt-1 mb-0">MINI BITES BAKERY</div>
                                     <div class="text-muted" style="font-size: 0.7rem;">NMID: ID1029384756102</div>
 
-                                    <!-- Auto Dynamic Generated QR Code -->
                                     <div class="my-3 p-2 bg-white d-inline-block rounded-3 border shadow-sm">
                                         <img id="qris-image" 
                                              src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://minibitesbakery.id/pay?total={{ optional($sale)->total_pembayaran ?? 0 }}" 
@@ -371,7 +368,6 @@
                             </button>
                         </form>
 
-                        @can('delete', $sale)
                         <form action="{{ route('penjualan.destroy', $sale->id) }}"
                               method="POST"
                               onsubmit="return confirm('Yakin ingin membatalkan seluruh transaksi ini?')">
@@ -381,7 +377,6 @@
                                 <i class="bi bi-x-circle me-2"></i> Batal Transaksi
                             </button>
                         </form>
-                        @endcan
                         @endif
                     </div>
                 </div>
@@ -391,7 +386,6 @@
     </div>
 </div>
 
-<!-- JavaScript Logika Kasir & Interaksi Form -->
 <script>
     const grandTotal = {{ optional($sale)->total_pembayaran ?? 0 }};
 
@@ -412,7 +406,7 @@
             sectionQris.classList.remove('d-none');
             sectionCash.classList.add('d-none');
             inputCash.required = false;
-            inputCash.value = grandTotal; // Set nominal otomatis jika via QRIS
+            inputCash.value = grandTotal;
         }
         calculateChange();
     }

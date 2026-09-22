@@ -135,7 +135,7 @@
                             <div>
                                 <p class="info-title">Tentang Toko</p>
                                 <p class="info-value" style="font-weight: normal; font-size: 0.95rem; line-height: 1.5;">
-                                    <strong>Mini Bites Bakery</strong> adalah toko kue modern yang menyajikan berbagai macam roti, cookies, dan cupcake berkualitas tinggi dengan bahan-bahan pilihan. Kami berkomitmen untuk memberikan cita rasa manis terbaik di setiap gigitan kecil Anda.
+                                    <strong>Mini Bites Bakery</strong> adalah toko kue modern yang menyajikan berbagai macam cookies, dan cupcake berkualitas tinggi dengan bahan-bahan pilihan. Kami berkomitmen untuk memberikan cita rasa manis terbaik di setiap gigitan kecil Anda.
                                 </p>
                             </div>
                         </div>

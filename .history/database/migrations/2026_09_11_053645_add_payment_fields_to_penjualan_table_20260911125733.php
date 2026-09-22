@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public class up(): void
+    public function up(): void
     {
         Schema::table('penjualan', function (Blueprint $table) {
             // Menambahkan kolom bayar/uang diterima dan kembali

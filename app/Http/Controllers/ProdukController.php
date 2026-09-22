@@ -42,6 +42,7 @@ class ProdukController extends Controller
         // 1. Validasi input
         $request->validate([
             'nama_produk' => 'required|string|max:255',
+            'deskripsi'   => 'nullable|string', // <-- DITAMBAHKAN
             'harga_beli'  => 'required|numeric|min:0',
             'harga_jual'  => 'required|numeric|min:0',
             'stok'        => 'required|integer|min:0',
@@ -52,6 +53,7 @@ class ProdukController extends Controller
         $data = [
             'user_id'    => Auth::id(),
             'nama'       => $request->nama_produk,
+            'deskripsi'  => $request->deskripsi, // <-- DITAMBAHKAN
             'harga_beli' => $request->harga_beli,
             'harga_jual' => $request->harga_jual,
             'stok'       => $request->stok,
@@ -72,9 +74,9 @@ class ProdukController extends Controller
      * Menampilkan detail produk.
      */
     public function show(Produk $produk)
-{
-    return view('produk.detail', compact('produk')); // Diubah dari 'produk.show' ke 'produk.detail'
-}
+    {
+        return view('produk.detail', compact('produk'));
+    }
 
     /**
      * Menampilkan form untuk mengedit produk.
@@ -92,6 +94,7 @@ class ProdukController extends Controller
         // 1. Validasi input
         $request->validate([
             'nama_produk' => 'required|string|max:255',
+            'deskripsi'   => 'nullable|string', // <-- DITAMBAHKAN
             'harga_beli'  => 'required|numeric|min:0',
             'harga_jual'  => 'required|numeric|min:0',
             'stok'        => 'required|integer|min:0',
@@ -102,6 +105,7 @@ class ProdukController extends Controller
         $data = [
             'user_id'    => Auth::id(),
             'nama'       => $request->nama_produk,
+            'deskripsi'  => $request->deskripsi, // <-- DITAMBAHKAN
             'harga_beli' => $request->harga_beli,
             'harga_jual' => $request->harga_jual,
             'stok'       => $request->stok,

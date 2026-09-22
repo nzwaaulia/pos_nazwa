@@ -176,7 +176,7 @@
 
                 @if(isset($produk->deskripsi) && $produk->deskripsi)
                 <div class="mb-4 p-3 rounded-4" style="background-color: #f7f4ef;">
-                    <span class="d-block small fw-bold text-uppercase mb-1" style="color: #6f4e37; font-size: 0.75rem;">Deskripsi Rasa</span>
+                    <span class="d-block small fw-bold text-uppercase mb-1" style="color: #6f4e37; font-size: 0.75rem;">Deskripsi</span>
                     <p class="mb-0 text-muted small">{{ $produk->deskripsi }}</p>
                 </div>
                 @endif
