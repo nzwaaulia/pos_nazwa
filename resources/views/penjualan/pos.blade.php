@@ -147,7 +147,7 @@
                 <span class="badge bg-white px-3 py-1 rounded-pill fw-bold mb-2 shadow-sm" style="color: #4a3525 !important;">
                     🥖 Mini Bites Bakery
                 </span>
-                <h2 class="fw-bold mb-0" style="font-family: serif; color: #4a3525;">Kasir & Penjualan Roti</h2>
+                <h2 class="fw-bold mb-0" style="font-family: serif; color: #4a3525;">Kasir & Penjualan Cookies dan Cupcake</h2>
                 <p class="text-muted small mb-0">Kelola transaksi pesanan kue pelanggan dengan cepat dan efisien.</p>
             </div>
             <div class="badge px-3 py-2 fs-6 shadow-sm rounded-pill {{ optional($sale)->status === 'COMPLETED' ? 'bg-success text-white' : 'bg-warning text-dark' }}">

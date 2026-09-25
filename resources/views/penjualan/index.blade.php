@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Penjualan - Sweet Crumbs Bakery')
+@section('title', 'Penjualan - Mini Bites Bakery')
 
 @section('content')
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Penjualan - Sweet Crumbs Bakery')
+@section('title', 'Detail Penjualan - Mini Bites Bakery')
 
 @section('content')
 
@@ -191,7 +191,7 @@
         <!-- Tabel Daftar Produk -->
         <div class="table-card d-print-none">
             <h5 class="fw-bold mb-4 px-2" style="color: #4a3525; font-family: serif;">
-                <i class="bi bi-basket me-2" style="color: #d4a373;"></i> Produk Roti yang Dibeli
+                <i class="bi bi-basket me-2" style="color: #d4a373;"></i> Produk Cookies dan Cupcake yang Dibeli
             </h5>
 
             <div class="table-responsive">
@@ -271,7 +271,7 @@
         <!-- AREA STRUK THERMAL (Khusus Cetak Printer Kasir) -->
         <div class="receipt-print-area d-none d-print-block mx-auto" style="max-width: 350px; font-family: 'Courier New', Courier, monospace; color: #000;">
             <div class="text-center mb-3">
-                <h4 class="fw-bold mb-0">Sweet Crumbs Bakery</h4>
+                <h4 class="fw-bold mb-0">Mini Bites Bakery</h4>
                 <p class="small mb-0">Jl. Roti Lezat No. 88, Bandung</p>
                 <p class="small mb-0">Telp: 0812-3456-7890</p>
                 <p class="mb-0">--------------------------------</p>
@@ -320,7 +320,7 @@
 
             <div class="text-center small">
                 <p class="mb-0">Terima Kasih Telah Berbelanja!</p>
-                <p class="mb-0">Nikmati Kelezatan Roti Kami 🍞</p>
+                <p class="mb-0">Nikmati Kelezatan Cookis dan Cupcake Kami 🍞</p>
             </div>
         </div>
 

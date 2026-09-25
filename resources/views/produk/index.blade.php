@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Produk - Sweet Crumbs Bakery')
+@section('title', 'Daftar Produk - Mini Bites Bakery')
 
 @section('content')
 
@@ -334,8 +334,8 @@
         <h1 class="hero-title">Halaman Produk</h1>
         <p class="hero-subtitle">Kelola inventaris, harga jual, dan stok varian cookies dan cupcake toko Anda.</p>
         
-        {{-- TOMBOL TAMBAH PRODUK UNTUK ADMIN (1) DAN KASIR (2) --}}
-        @if(in_array(auth()->user()->role_id, [1, 2]))
+        {{-- TOMBOL TAMBAH PRODUK HANYA UNTUK ADMIN (role_id == 1 ATAU role == 'admin') --}}
+        @if(auth()->user()->role_id == 1 || auth()->user()->role === 'admin')
             <a href="{{ route('produk.create') }}" class="btn-hero-add">
                 <i class="bi bi-plus-circle-fill"></i> Tambah Produk
             </a>
@@ -387,8 +387,8 @@
                         👁️ Detail
                     </a>
                     
-                    {{-- TOMBOL EDIT & HAPUS HANYA UNTUK ADMIN (role_id == 1) --}}
-                    @if(auth()->user()->role_id == 1)
+                    {{-- TOMBOL EDIT & HAPUS HANYA UNTUK ADMIN (role_id == 1 ATAU role == 'admin') --}}
+                    @if(auth()->user()->role_id == 1 || auth()->user()->role === 'admin')
                         <a href="{{ route('produk.edit', $product) }}" class="btn-action-custom btn-card-edit">
                             ✏️ Edit
                         </a>

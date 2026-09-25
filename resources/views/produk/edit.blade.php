@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Produk - Sweet Crumbs Bakery')
+@section('title', 'Edit Produk -  Mini Bites Bakery ')
 
 @section('content')
 

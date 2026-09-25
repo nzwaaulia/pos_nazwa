@@ -43,10 +43,13 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin,kasir')->group(function () {
         Route::resource('/produk', ProdukController::class);
         
-        // Cukup deklarasi sederhana seperti ini (otomatis membuat rute penjualan.index, penjualan.create, penjualan.store, dll)
+        // Resource Penjualan & Item Penjualan
         Route::resource('/penjualan', PenjualanController::class);
-
         Route::resource('/itempenjualan', ItemPenjualanController::class);
+
+        // ROUTE TAMBAHAN UNTUK FITUR POS (FITUR SCAN & CHECKOUT)
+        Route::post('/pos/scan', [ItemPenjualanController::class, 'store'])->name('pos.scan');
+        Route::post('/pos/checkout', [PenjualanController::class, 'store'])->name('pos.checkout');
 
         Route::get('/admin/penjualan/{penjualan}', [PenjualanController::class, 'show'])
             ->name('admin.penjualan.show');

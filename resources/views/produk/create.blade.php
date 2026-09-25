@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Produk Baru - Sweet Crumbs Bakery')
+@section('title', 'Tambah Produk Baru - Mini Bites Bakery')
 
 @section('content')
 
@@ -93,7 +93,7 @@
                                 <i class="bi bi-cake2 fs-3"></i>
                             </div>
                             <div>
-                                <h2 class="mb-1 fs-3">Tambah Produk Kue Baru</h2>
+                                <h2 class="mb-1 fs-3">Tambah Produk ookies dan Cupcake Baru</h2>
                                 <p class="mb-0">Lengkapi formulir di bawah ini untuk menambahkan varian kue baru ke katalog sistem.</p>
                             </div>
                         </div>
